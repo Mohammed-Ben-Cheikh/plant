@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API REST : Architecture Moderne des Services Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        /* Modern animations and transitions */
+        .slide {
+            opacity: 0;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(40px) scale(0.95);
+            min-height: calc(100vh - 80px);
+            backdrop-filter: blur(10px);
+            background: rgba(17, 24, 39, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .progress-bar {
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+        }
+        
+        .slide-image {
+            max-width: 500px;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .slide-image:hover {
+            transform: scale(1.03) translateY(-10px);
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .slide-content {
+            max-width: 800px;
+        }
+        
+        /* Glass effect for header */
+        .glass-header {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Enhanced text effects */
+        .gradient-text {
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Button hover effects */
+        .nav-button {
+            transition: all 0.3s ease;
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button:hover {
+            background: rgba(55, 65, 81, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-white font-[Inter]">
+    <!-- Header (Professional Style) -->
+    <header class="fixed top-0 left-0 right-0 bg-black/60 backdrop-blur-md z-50 border-b border-gray-800 glass-header">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                    <span class="font-bold text-white text-lg">API</span>
+                </div>
+                <span class="text-blue-300 font-semibold text-xl tracking-wide">Architecture API REST</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button id="prevSlide" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors group nav-button">
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <span id="slideCounter" class="text-gray-400 font-mono text-sm">1/8</span>
+                <button id="nextSlide" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors group nav-button">
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="h-1 bg-gray-800">
+            <div id="progressBar" class="progress-bar h-full bg-blue-600 w-0"></div>
+        </div>
+    </header>
+
+    <!-- Rest of the content remains the same, with subtle styling improvements -->
+    <div class="container mx-auto px-6 py-8 pt-24">
+        <!-- Title Slide -->
+        <div class="slide min-h-screen flex items-center justify-center mb-16">
+            <div class="text-center space-y-8">
+                <img src="https://cdn.pixabay.com/photo/2018/05/04/20/01/website-3374825_1280.jpg" 
+                     alt="API REST" class="slide-image mx-auto mb-8">
+                <h1 class="text-7xl font-bold text-blue-400 mb-6 gradient-text">Projet API REST</h1>
+                <p class="text-2xl text-gray-300">Une architecture pour des APIs modernes et scalables</p>
+            </div>
+        </div>
+
+        <!-- Introduction Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Introduction</h2>
+                    <p class="text-2xl text-gray-300 leading-relaxed">
+                        Une API REST (Representational State Transfer) est une architecture permettant la communication entre différents systèmes via le protocole HTTP. Elle repose sur des principes bien définis garantissant sa scalabilité, sa sécurité et sa facilité d'utilisation. Contrairement à d'autres types d'API, REST est conçu pour fonctionner sans état, ce qui signifie que chaque requête envoyée au serveur doit contenir toutes les informations nécessaires pour être traitée.
+                    </p>
+                </div>
+                <img src="https://cdn.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png"
+                     alt="REST Architecture" class="slide-image">
+            </div>
+        </div>
+
+        <!-- Principes Clés Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <img src="https://cdn.pixabay.com/photo/2016/10/18/19/40/anatomy-1751201_1280.png"
+                     alt="Principes Clés" class="slide-image">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Principes Clés</h2>
+                    <ul class="space-y-6 text-2xl text-gray-300">
+                        <li><strong class="text-blue-300">Stateless :</strong> L'absence de session côté serveur signifie que chaque requête effectuée doit contenir toutes les informations nécessaires à son traitement.</li>
+                        <li><strong class="text-blue-300">Client-Server :</strong> L'architecture REST repose sur une stricte séparation entre le client (frontend) et le serveur (backend).</li>
+                        <li><strong class="text-blue-300">Cacheable :</strong> Pour optimiser les performances et réduire la charge serveur, les réponses à certaines requêtes peuvent être mises en cache.</li>
+                        <li><strong class="text-blue-300">Uniform Interface :</strong> Une API REST doit posséder une interface uniforme avec des endpoints clairs et cohérents.</li>
+                        <li><strong class="text-blue-300">Layered System :</strong> La conception en couches permet une meilleure sécurité et une plus grande modularité.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Méthodes HTTP Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Méthodes HTTP</h2>
+                    <ul class="space-y-6 text-2xl text-gray-300">
+                        <li><strong class="text-blue-300">GET :</strong> Récupérer des ressources sans les modifier. Ex: <code class="bg-gray-700 px-2 py-1 rounded">/users/{id}</code></li>
+                        <li><strong class="text-blue-300">POST :</strong> Créer une nouvelle ressource. Ex: <code class="bg-gray-700 px-2 py-1 rounded">/users</code></li>
+                        <li><strong class="text-blue-300">PUT/PATCH :</strong> Mettre à jour une ressource existante. PUT pour remplacement complet, PATCH pour modification partielle.</li>
+                        <li><strong class="text-blue-300">DELETE :</strong> Supprimer une ressource. Ex: <code class="bg-gray-700 px-2 py-1 rounded">/users/{id}</code></li>
+                    </ul>
+                </div>
+                <img src="https://cdn.pixabay.com/photo/2018/05/04/20/01/website-3374825_1280.jpg"
+                     alt="HTTP Methods" class="slide-image">
+            </div>
+        </div>
+
+        <!-- Avantages Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Avantages</h2>
+                    <ul class="space-y-6 text-2xl text-gray-300">
+                        <li>✅ <strong class="text-blue-300">Simplicité :</strong> Architecture simple à comprendre et à implémenter</li>
+                        <li>✅ <strong class="text-blue-300">Scalabilité :</strong> Montée en charge facile sans état serveur</li>
+                        <li>✅ <strong class="text-blue-300">Indépendance :</strong> Utilisable avec tout type de client (web, mobile, IoT)</li>
+                    </ul>
+                </div>
+                <img src="https://cdn.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png"
+                     alt="Avantages" class="slide-image">
+            </div>
+        </div>
+
+        <!-- Inconvénients Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <img src="https://cdn.pixabay.com/photo/2016/10/18/19/40/anatomy-1751201_1280.png"
+                     alt="Inconvénients" class="slide-image">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Inconvénients</h2>
+                    <ul class="space-y-6 text-2xl text-gray-300">
+                        <li>❌ <strong class="text-blue-300">Temps réel limité :</strong> Moins adapté aux mises à jour en temps réel que WebSocket</li>
+                        <li>❌ <strong class="text-blue-300">Requêtes verbeuses :</strong> Chaque requête doit contenir toutes les informations nécessaires</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bonnes Pratiques Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Bonnes Pratiques</h2>
+                    <ul class="space-y-6 text-2xl text-gray-300">
+                        <li><strong class="text-blue-300">URLs RESTful :</strong> Utiliser des URLs descriptives comme <code class="bg-gray-700 px-2 py-1 rounded">/users/{id}</code></li>
+                        <li><strong class="text-blue-300">Statuts HTTP :</strong> Utiliser les bons codes (200, 404, 500)</li>
+                        <li><strong class="text-blue-300">Sécurité :</strong> Implémenter JWT/OAuth2 et Rate Limiting</li>
+                        <li><strong class="text-blue-300">Versioning :</strong> Utiliser <code class="bg-gray-700 px-2 py-1 rounded">/v1/users</code>, <code class="bg-gray-700 px-2 py-1 rounded">/v2/users</code></li>
+                        <li><strong class="text-blue-300">Pagination :</strong> Limiter les résultats avec <code class="bg-gray-700 px-2 py-1 rounded">/users?page=2&limit=10</code></li>
+                    </ul>
+                </div>
+                <img src="https://cdn.pixabay.com/photo/2018/05/04/20/01/website-3374825_1280.jpg"
+                     alt="Bonnes Pratiques" class="slide-image">
+            </div>
+        </div>
+
+        <!-- Conclusion Slide -->
+        <div class="slide flex items-center mb-16 bg-gray-800/50 rounded-xl p-12">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="slide-content space-y-6">
+                    <h2 class="text-5xl font-bold text-blue-400 mb-8 gradient-text">Conclusion</h2>
+                    <p class="text-2xl text-gray-300 leading-relaxed">
+                        L'architecture REST offre une approche flexible et standardisée pour la conception d'API. Elle permet de développer des systèmes évolutifs, performants et sécurisés. En suivant les bonnes pratiques et en respectant ses principes fondamentaux, une API REST peut être robuste, facile à maintenir et adaptable aux évolutions futures des applications.
+                    </p>
+                </div>
+                <img src="https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg"
+                     alt="Conclusion" class="slide-image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced presentation engine with smoother transitions and better error handling
+        class PresentationEngine {
+            constructor() {
+                this.currentSlide = 0;
+                this.slides = document.querySelectorAll('.slide');
+                this.progressBar = document.getElementById('progressBar');
+                this.slideCounter = document.getElementById('slideCounter');
+                
+                this.initializeNavigation();
+                this.showSlide(0);
+            }
+
+            initializeNavigation() {
+                document.getElementById('prevSlide').addEventListener('click', () => this.previousSlide());
+                document.getElementById('nextSlide').addEventListener('click', () => this.nextSlide());
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.previousSlide();
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                });
+            }
+
+            showSlide(index) {
+                if (index < 0 || index >= this.slides.length) return;
+
+                this.slides.forEach(slide => slide.classList.remove('active'));
+                this.slides[index].classList.add('active');
+                
+                this.currentSlide = index;
+                this.updateProgressBar();
+                this.updateSlideCounter();
+            }
+
+            updateProgressBar() {
+                const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = `${progress}%`;
+            }
+
+            updateSlideCounter() {
+                this.slideCounter.textContent = `${this.currentSlide + 1}/${this.slides.length}`;
+            }
+
+            nextSlide() {
+                this.showSlide(Math.min(this.currentSlide + 1, this.slides.length - 1));
+            }
+
+            previousSlide() {
+                this.showSlide(Math.max(this.currentSlide - 1, 0));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new PresentationEngine();
+        });
+    </script>
+</body>
+</html>
