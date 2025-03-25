@@ -40,6 +40,17 @@ class OrderRepositoryData implements OrderRepository
     }
 
     /**
+     * Get Order by status
+     *
+     * @param string $status
+     * @return mixed
+     */
+    public function findByStatus(string $status)
+    {
+        return Order::where('status', $status)->get();
+    }
+
+    /**
      * Create a new Order
      *
      * @param array $data

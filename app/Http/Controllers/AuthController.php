@@ -30,8 +30,19 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         $credentials = $request->validated();
+
+        $token = $this->jwtToken($credentials);
+        
+        if ($token->data->get() == null) {
+            return $this->error(null, 'Invalid credentials or token generation failed', 401);
+        }
+        
+        if (!Auth::user()) {
+            return $this->error(null, 'Authentication failed', 401);
+        }
+
         return $this->success([
-            'token' => $this->jwtToken($credentials),
+            'token' => $token,
             // 'test' => $this->getToken(),
             'user' => Auth::user(),
         ], 'Login successful');

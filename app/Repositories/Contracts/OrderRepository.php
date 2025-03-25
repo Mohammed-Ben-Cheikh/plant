@@ -28,6 +28,14 @@ interface OrderRepository
     public function findByUser(int $userId);
 
     /**
+     * Get plant by status
+     *
+     * @param string $status
+     * @return mixed
+     */
+    public function findByStatus(string $status);
+
+    /**
      * Create a new plant
      *
      * @param array $data

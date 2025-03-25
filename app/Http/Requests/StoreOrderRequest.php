@@ -22,7 +22,11 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'invoice' => 'required|string|max:255|unique:orders,invoice',
+            'user_id' => 'required|integer|exists:users,id',
+            'plant_id' => 'required|integer|exists:plants,id',
+            'quantity' => 'required|numeric|min:1',
+            'total' => 'required|numeric|min:0',
         ];
     }
 }

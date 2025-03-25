@@ -1,9 +1,10 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OllamaController;
 use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\CategoriesController;
 
@@ -42,12 +43,17 @@ Route::middleware('auth:api')->group(function () {
 
     // routes protégées pour les employés
     Route::middleware('role:employee')->group(function () {
-        // 
+        // reservations
+        Route::get('/reservations', [OrderController::class, 'index']);
+        Route::get('/reservations/{slug}', [OrderController::class, 'index']);
     });
-
 
     // routes protégées pour les touristes
     Route::middleware('role:cleint')->group(function () {
-        //
+        //reservations
+        Route::post('/reservations', [OrderController::class, 'store']);
+        Route::get('/reservations/{slug}', [OrderController::class, 'show']);
+        Route::put('/reservations/{slug}', [OrderController::class, 'update']);
+        Route::delete('/reservations/{slug}', [OrderController::class, 'destroy']);
     });
 });
