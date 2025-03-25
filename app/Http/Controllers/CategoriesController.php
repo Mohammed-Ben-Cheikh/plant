@@ -10,7 +10,7 @@ use App\Repositories\Contracts\CategoriesRepository;
 
 class CategoriesController extends Controller
 {
-    use HttpResponses, Url;
+    use HttpResponses;
     protected $categoriesRepository;
 
     public function __construct(CategoriesRepository $categoriesRepository)
