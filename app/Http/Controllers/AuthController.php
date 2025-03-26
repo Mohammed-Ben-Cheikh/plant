@@ -92,8 +92,6 @@ class AuthController extends Controller
         }
     }
 
-
-
     /**
      * Handle user logout.
      */
