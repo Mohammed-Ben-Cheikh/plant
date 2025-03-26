@@ -26,19 +26,19 @@ Route::middleware('auth:api')->group(function () {
 
     // Routes protégées pour les administrateurs
     Route::middleware('role:admin')->group(function () {
-        // // categories
-        // Route::get('/categories', [CategoriesController::class, 'index']);
-        // Route::post('/categories', [CategoriesController::class, 'store']);
-        // Route::get('/categories/{slug}', [CategoriesController::class, 'show']);
-        // Route::put('/categories/{slug}', [CategoriesController::class, 'update']);
-        // Route::delete('/categories/{slug}', [CategoriesController::class, 'destroy']);
+        // categories
+        Route::get('/categories', [CategoriesController::class, 'index']);
+        Route::post('/categories', [CategoriesController::class, 'store']);
+        Route::get('/categories/{slug}', [CategoriesController::class, 'show']);
+        Route::put('/categories/{slug}', [CategoriesController::class, 'update']);
+        Route::delete('/categories/{slug}', [CategoriesController::class, 'destroy']);
 
-        // // plants
-        // Route::get('/plants', [PlantsController::class, 'index']);
-        // Route::post('/plants', [PlantsController::class, 'store']);
-        // Route::get('/plants/{slug}', [PlantsController::class, 'show']);
-        // Route::put('/plants/{slug}', [PlantsController::class, 'update']);
-        // Route::delete('/plants/{slug}', [PlantsController::class, 'destroy']);
+        // plants
+        Route::get('/plants', [PlantsController::class, 'index']);
+        Route::post('/plants', [PlantsController::class, 'store']);
+        Route::get('/plants/{slug}', [PlantsController::class, 'show']);
+        Route::put('/plants/{slug}', [PlantsController::class, 'update']);
+        Route::delete('/plants/{slug}', [PlantsController::class, 'destroy']);
     });
 
     // routes protégées pour les employés
@@ -54,19 +54,5 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/reservations/{slug}', [OrderController::class, 'show']);
         Route::put('/reservations/{slug}', [OrderController::class, 'update']);
         Route::delete('/reservations/{slug}', [OrderController::class, 'destroy']);
-
-        // categories
-        Route::get('/categories', [CategoriesController::class, 'index']);
-        Route::post('/categories', [CategoriesController::class, 'store']);
-        Route::get('/categories/{slug}', [CategoriesController::class, 'show']);
-        Route::put('/categories/{slug}', [CategoriesController::class, 'update']);
-        Route::delete('/categories/{slug}', [CategoriesController::class, 'destroy']);
-
-        // plants
-        Route::get('/plants', [PlantsController::class, 'index']);
-        Route::post('/plants', [PlantsController::class, 'store']);
-        Route::get('/plants/{slug}', [PlantsController::class, 'show']);
-        Route::put('/plants/{slug}', [PlantsController::class, 'update']);
-        Route::delete('/plants/{slug}', [PlantsController::class, 'destroy']);
     });
 });

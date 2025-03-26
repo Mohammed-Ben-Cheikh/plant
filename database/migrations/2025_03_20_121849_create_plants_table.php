@@ -16,12 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique()->after('name');
             $table->string('description');
-            $table->string('image_primary');
-            $table->string('image_secondary');
-            $table->string('image_tertiary');
-            $table->string('image_quaternary');
             $table->foreignId('category_id')->constrained('categories');
-            $table->integer('price');
+            $table->decimal('price', 10, 2);    
             $table->integer('stock');
             $table->boolean('status')->default(true);
             $table->softDeletes();

@@ -32,18 +32,13 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         $token = $this->jwtToken($credentials);
-        
-        if ($token->data->get() == null) {
-            return $this->error(null, 'Invalid credentials or token generation failed', 401);
-        }
-        
+
         if (!Auth::user()) {
             return $this->error(null, 'Authentication failed', 401);
         }
 
         return $this->success([
             'token' => $token,
-            // 'test' => $this->getToken(),
             'user' => Auth::user(),
         ], 'Login successful');
     }
@@ -57,7 +52,7 @@ class AuthController extends Controller
             $token = Str::random(60);
 
             // Vérification et attribution du rôle 'tourist'
-            $roleId = static::getRoleId('cleint');
+            $roleId = static::getRoleId('admin');
 
             $user = User::create([
                 'name' => $request->validated('name'),

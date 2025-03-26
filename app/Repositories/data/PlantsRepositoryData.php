@@ -3,6 +3,7 @@
 namespace App\Repositories\data;
 
 use App\Models\Plants;
+use App\Models\PlantsImg;
 use App\Repositories\Contracts\PlantsRepository;
 
 class PlantsRepositoryData implements PlantsRepository
@@ -36,7 +37,15 @@ class PlantsRepositoryData implements PlantsRepository
      */
     public function create(array $data)
     {
-        return Plants::create($data);
+        $plant = Plants::create($data);
+        foreach ($data['images'] as $image) {
+            PlantsImg::create([
+                'plants_id' => $plant->id,
+                'img_url' => $image['img_url'],
+                'is_primary' => $image['is_primary'],
+            ]);
+        }
+        return $plant;
     }
 
     /**
