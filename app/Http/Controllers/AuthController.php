@@ -30,13 +30,10 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         $credentials = $request->validated();
-
         $token = $this->jwtToken($credentials);
-
         if (!Auth::user()) {
             return $this->error(null, 'Authentication failed', 401);
         }
-
         return $this->success([
             'token' => $token,
             'user' => Auth::user(),
@@ -50,10 +47,8 @@ class AuthController extends Controller
     {
         try {
             $token = Str::random(60);
-
             // Vérification et attribution du rôle 'tourist'
             $roleId = static::getRoleId('admin');
-
             $user = User::create([
                 'name' => $request->validated('name'),
                 'username' => Str::lower(Str::slug($request->validated('name'))) . '-' . Str::lower(Str::random(4)),
@@ -67,7 +62,6 @@ class AuthController extends Controller
                 // Envoyer un e-mail d'activation
                 $user->notify(new ActivationNotification($token));
             }
-
             return $this->success([
                 'user' => $user,
                 'token' => $this->jwtToken(['email' => $user->email, 'password' => $request->password]),
@@ -83,16 +77,14 @@ class AuthController extends Controller
     public function activateAccount(Request $request)
     {
         $request->validate(['token' => 'required']);
-
         $user = User::where('activation_token', $request->token)->first();
-
         if (!$user) {
             return $this->error(null, 'Invalid token', 400);
         }
-
         try {
             $user->update(['activated' => true, 'activation_token' => null, 'email_verified_at' => now()]);
-            return $this->success(null,
+            return $this->success(
+                null,
                 'Account activated successfully'
             );
         } catch (Exception $e) {
@@ -122,17 +114,14 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
-
         try {
             $token = Str::random(60);
             PasswordResetToken::updateOrCreate(
                 ['email' => $request->email],
                 ['token' => $token, 'created_at' => now()]
             );
-
             $user = User::where('email', $request->email)->firstOrFail();
             $user->notify(new ResetPasswordNotification($token));
-
             return $this->success(null, 'Password reset email sent.');
         } catch (Exception $e) {
             return $this->error(null, 'Failed to send reset email: ' . $e->getMessage(), 500);
@@ -149,24 +138,19 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
         if ($validator->fails()) {
             return $this->error($validator->errors(), 'Invalid input', 400);
         }
-
         $reset = PasswordResetToken::where('email', $request->email)
             ->where('token', $request->token)
             ->first();
-
         if (!$reset || Carbon::parse($reset->created_at)->addMinutes(60)->isPast()) {
             return $this->error(null, 'Invalid or expired token', 400);
         }
-
         try {
             $user = User::where('email', $request->email)->firstOrFail();
             $user->update(['password' => Hash::make($request->password)]);
             $reset->delete();
-
             return $this->success(null, 'Password successfully reset.');
         } catch (Exception $e) {
             return $this->error(null, 'Password reset failed: ' . $e->getMessage(), 500);
