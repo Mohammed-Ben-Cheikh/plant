@@ -3,7 +3,9 @@
 namespace App\Repositories\data;
 
 use App\Models\Order;
+use App\Models\Plants;
 use App\Repositories\Contracts\OrderRepository;
+use Illuminate\Container\Attributes\Auth;
 
 class OrderRepositoryData implements OrderRepository
 {
@@ -58,7 +60,19 @@ class OrderRepositoryData implements OrderRepository
      */
     public function create(array $data)
     {
-        return Order::create($data);
+        $plant = Plants::where('id', $data['plant_id'])->first();
+        if ($plant->stock < $data['quantity']) {
+            return ['message' => 'Stock insuffisant'];
+        }
+        $user = auth()->user();
+        $plant->decrement('stock', $data['quantity']);
+        return Order::create([
+            'invoice' => 'INV-' . time(),
+            'user_id' => $user->id,
+            'plant_id' => $plant->id,
+            'quantity' => $data['quantity'],
+            'total' => $plant->price * $data['quantity']
+        ]);
     }
 
     /**
