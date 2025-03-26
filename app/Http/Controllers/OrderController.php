@@ -65,18 +65,22 @@ class OrderController extends Controller
 
     public function orderStatus()
     {
+        $valideStatus = ['pending', 'success', 'annulled'];
         $status = request('status');
+        if (!in_array($status, $valideStatus)) {
+            return $this->error(null, 'Invalid status', 400);
+        }
         $orders = $this->orderRepository->findByStatus($status);
         return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 100);
     }
 
-    public function updateOrderStatus($slug, $status)
+    public function updateOrderStatus($slug)
     {
         $order = $this->orderRepository->findBySlug($slug);
         if (!$order) {
             return $this->error(null, 'Order not found', 404);
         }
-        $this->orderRepository->update($order, ['status' => $status]);
+        $this->orderRepository->update($order, ['status' => 'success']);
         return $this->success(['Order' => $order], 'Order status updated successfully');
     }
 }
