@@ -3,10 +3,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OrderController;
+use SebastianBergmann\Type\StaticType;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\StatistiqueController;
 
 // Authentification
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -38,6 +40,9 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/plants/{slug}', [PlantsController::class, 'show']);
         Route::put('/plants/{slug}', [PlantsController::class, 'update']);
         Route::delete('/plants/{slug}', [PlantsController::class, 'destroy']);
+
+        //statistiques
+        Route::get('/statistics', [StatistiqueController::class, 'statistics']);
     });
     
     // routes protégées pour les employés
