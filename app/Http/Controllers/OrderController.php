@@ -21,7 +21,13 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderRepository->all();
-        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 100);
+        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 200);
+    }
+
+    public function indexUser()
+    {
+        $orders = $this->orderRepository->all();
+        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 200);
     }
 
     public function store(StoreOrderRequest $request)
@@ -54,24 +60,23 @@ class OrderController extends Controller
     public function destroy($slug)
     {
         $this->orderRepository->delete($slug);
-        return $this->success(null, 'Order deleted successfully');
+        return $this->success(null, 'Order annulled successfully');
     }
 
     public function userOrders($userId)
     {
         $orders = $this->orderRepository->findByUser($userId);
-        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 100);
+        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 200);
     }
 
-    public function orderStatus()
+    public function orderStatus($status)
     {
         $valideStatus = ['pending', 'success', 'annulled'];
-        $status = request('status');
         if (!in_array($status, $valideStatus)) {
             return $this->error(null, 'Invalid status', 400);
         }
         $orders = $this->orderRepository->findByStatus($status);
-        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 100);
+        return $this->success(['Orders' => $orders], 'Orders retrieved successfully', 200);
     }
 
     public function updateOrderStatus($slug)
@@ -84,3 +89,4 @@ class OrderController extends Controller
         return $this->success(['Order' => $order], 'Order status updated successfully');
     }
 }
+ 

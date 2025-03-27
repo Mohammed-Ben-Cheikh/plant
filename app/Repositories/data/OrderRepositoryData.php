@@ -4,8 +4,8 @@ namespace App\Repositories\data;
 
 use App\Models\Order;
 use App\Models\Plants;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\Contracts\OrderRepository;
-use Illuminate\Container\Attributes\Auth;
 
 class OrderRepositoryData implements OrderRepository
 {
@@ -64,7 +64,7 @@ class OrderRepositoryData implements OrderRepository
         if ($plant->stock < $data['quantity']) {
             return ['message' => 'Stock insuffisant'];
         }
-        $user = auth()->user();
+        $user = Auth::user();
         $plant->decrement('stock', $data['quantity']);
         return Order::create([
             'invoice' => 'INV-' . time(),

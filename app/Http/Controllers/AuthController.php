@@ -163,5 +163,4 @@ class AuthController extends Controller
         $role = Role::where('name', $role)->first();
         return $role ? $role->id : null;
     }
-
 }

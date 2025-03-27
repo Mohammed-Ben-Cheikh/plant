@@ -19,11 +19,10 @@ Route::post('/password-reset/confirm', [AuthController::class, 'resetPassword'])
 
 
 Route::middleware('auth:api')->group(function () {
-
+    
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
+    
     // Routes protégées pour les administrateurs
     Route::middleware('role:admin')->group(function () {
         // categories
@@ -32,7 +31,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/categories/{slug}', [CategoriesController::class, 'show']);
         Route::put('/categories/{slug}', [CategoriesController::class, 'update']);
         Route::delete('/categories/{slug}', [CategoriesController::class, 'destroy']);
-
+        
         // plants
         Route::get('/plants', [PlantsController::class, 'index']);
         Route::post('/plants', [PlantsController::class, 'store']);
@@ -40,16 +39,20 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/plants/{slug}', [PlantsController::class, 'update']);
         Route::delete('/plants/{slug}', [PlantsController::class, 'destroy']);
     });
-
+    
     // routes protégées pour les employés
     Route::middleware('role:employee')->group(function () {
-
+        Route::get('/reservations', [OrderController::class, 'index']);
+        Route::get('/reservations/users/{id}', [OrderController::class, 'userOrders']);
+        Route::get('/reservations/status/{status}', [OrderController::class, 'orderStatus']);
+        Route::put('/reservations/{slug}', [OrderController::class, 'updateOrderStatus']);
+        Route::delete('/reservations/{slug}', [OrderController::class, 'destroy']);
     });
-
+    
     // routes protégées pour les touristes
     Route::middleware('role:cleint')->group(function () {
         //reservations
-        Route::get('/reservations', [OrderController::class, 'index']);
+        Route::get('/reservations/users/{id}', [OrderController::class, 'userOrders']);
         Route::post('/reservations', [OrderController::class, 'store']);
         Route::get('/reservations/{slug}', [OrderController::class, 'show']);
         Route::put('/reservations/{slug}', [OrderController::class, 'update']);

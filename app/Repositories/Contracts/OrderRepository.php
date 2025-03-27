@@ -20,7 +20,7 @@ interface OrderRepository
     public function findBySlug(string $slug);
 
     /**
-     * Get plant by user
+     * Get order by user
      *
      * @param int $userId
      * @return mixed
