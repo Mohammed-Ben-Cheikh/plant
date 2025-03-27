@@ -21,7 +21,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = $this->categoriesRepository->all();
-        return $this->success(['Categories' => $categories], 'Categories retrieved successfully',100);
+        return $this->success(['Categories' => $categories], 'Categories retrieved successfully',200);
     }
 
     public function store(StoreCategoriesRequest $request)
