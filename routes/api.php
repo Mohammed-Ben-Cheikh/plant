@@ -11,7 +11,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\StatistiqueController;
 
 
-Route::middleware('throttle:60,1')->group(function () {
+Route::middleware('throttle:auth')->group(function () {
     // Authentification
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -21,7 +21,7 @@ Route::middleware('throttle:60,1')->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'throttle:60,1'])->group(function () {
+Route::middleware(['auth:api', 'throttle:app'])->group(function () {
 
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
