@@ -3,12 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\data\OrderRepositoryData;
 use App\Repositories\Contracts\OrderRepository;
 use App\Repositories\data\PlantsRepositoryData;
 use App\Repositories\Contracts\PlantsRepository;
 use App\Repositories\data\CategoriesRepositoryData;
 use App\Repositories\Contracts\CategoriesRepository;
-use App\Repositories\data\OrderRepositoryData;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,4 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+
 }

@@ -51,7 +51,6 @@ class AuthController extends Controller
             $roleId = static::getRoleId('admin');
             $user = User::create([
                 'name' => $request->validated('name'),
-                'username' => Str::lower(Str::slug($request->validated('name'))) . '-' . Str::lower(Str::random(4)),
                 'email' => $request->validated('email'),
                 'role_id' => $roleId,
                 'activation_token' => $token,

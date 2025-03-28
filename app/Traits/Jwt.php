@@ -27,9 +27,8 @@ trait Jwt
                 return $this->error(null, 'Invalid credentials', 401);
             }
         } catch (JWTException $e) {
-            return $this->error(null, 'Could not create token', 500);
+            return $this->error(null, 'Could not create token error: ' . $e, 500);
         }
-
         // dd('Token généré :', $token); // Vérifier si le token est bien créé
         return $token;
     }
@@ -43,7 +42,6 @@ trait Jwt
     {
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
-            // dd(JWTAuth::getToken(),Auth::user()); // Debug
         } catch (JWTException $e) {
             return $this->error(null, 'Could not invalidate token', 500);
         }

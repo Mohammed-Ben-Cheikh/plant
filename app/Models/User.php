@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Spatie\Sluggable\SlugOptions;
+use Spatie\Sluggable\HasSlug;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +21,6 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
-        'username',
         'role_id',
         'activation_token',
         'email_verified_at',
@@ -73,5 +74,13 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create() 
+            ->generateSlugsFrom('name') // Génère le slug à partir du nom
+            ->saveSlugsTo('username')
+            ->slugsShouldBeNoLongerThan(50); // Limite la longueur du slug à 50 caractères
     }
 }

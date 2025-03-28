@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('plant_id')->constrained('plants');
             $table->integer('quantity');
-            $table->integer('total');
+            $table->decimal('total', 10, 2);
             $table->enum(
                 'status',
                 ['pending', 'success', 'annulled']
