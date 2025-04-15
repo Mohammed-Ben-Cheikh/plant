@@ -22,7 +22,7 @@ class StorePlantsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'/**,'unique:plants,name'*/],
+            'name' => ['required', 'string', 'max:255','unique:plants,name'],
             'description' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'price' => ['required', 'numeric'],
